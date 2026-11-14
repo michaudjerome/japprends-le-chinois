@@ -3,18 +3,21 @@ import { loadSettings } from './settings.js';
 import * as home from './views/home.js';
 import * as settingsView from './views/settings.js';
 import * as sources from './views/sources.js';
-import { make as soon } from './views/soon.js';
 import * as create from './views/create.js';
 import * as cardsView from './views/cards.js';
+import * as review from './views/review.js';
+import * as discover from './views/discover.js';
+import * as quiz from './views/quiz.js';
 
 const routes = {
   '': home,
   reglages: settingsView,
   sources,
-  reviser: soon('Révision', '复', 2),
+  reviser: review,
+  jouer: quiz,
   creer: create,
   cartes: cardsView,
-  decouvrir: soon('Découvrir', '探', 4),
+  decouvrir: discover,
 };
 
 const el = document.getElementById('app');
@@ -42,4 +45,28 @@ async function route() {
   askPersistence();
   addEventListener('hashchange', route);
   route();
+  registerSW();
 })();
+
+// Hors ligne : le service worker garde l'application dans le téléphone ; une nouvelle version s'annonce par une barre
+function registerSW() {
+  if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
+  const offer = (w) => {
+    if (!w || document.querySelector('.update-bar')) return;
+    const bar = document.createElement('div');
+    bar.className = 'update-bar';
+    bar.innerHTML = '<span>Nouvelle version disponible</span><button>Mettre à jour</button>';
+    bar.querySelector('button').onclick = () => w.postMessage('skip');
+    document.body.append(bar);
+  };
+  let reloading = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloading) { reloading = true; location.reload(); } });
+  navigator.serviceWorker.register('sw.js').then((reg) => {
+    if (reg.waiting && navigator.serviceWorker.controller) offer(reg.waiting);
+    reg.addEventListener('updatefound', () => {
+      const w = reg.installing;
+      w?.addEventListener('statechange', () => { if (w.state === 'installed' && navigator.serviceWorker.controller) offer(w); });
+    });
+    setInterval(() => reg.update().catch(() => {}), 30 * 60000);
+  }).catch(() => {});
+}

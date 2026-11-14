@@ -131,3 +131,19 @@ export function toneHtml(py) {
     return split(part).map((s) => `<span class="t${toneOf(s)}">${esc(s)}</span>`).join('');
   }).join('');
 }
+
+// Mots d'un niveau HSK, dans l'ordre de la liste officielle, une lecture par mot
+const shortFr = (defs) => defs.split('/').filter((d) => !/^(\(|variante|cf\.|voir )/i.test(d)).slice(0, 2).join(', ') || defs.split('/')[0];
+const levelCache = {};
+export function entriesOfLevel(level) {
+  if (!E) return [];
+  if (levelCache[level]) return levelCache[level];
+  const seen = new Set();
+  const out = [];
+  for (const e of E) {
+    if (e[4] !== level || seen.has(e[0])) continue;
+    seen.add(e[0]);
+    out.push({ hanzi: e[0], pinyin: e[2], fr: shortFr(e[3]), level });
+  }
+  return (levelCache[level] = out);
+}
