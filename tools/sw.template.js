@@ -4,7 +4,8 @@ const CACHE = `jlc-${V}`;
 const CORE = __CORE__;
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)));
+  // Mise à jour automatique : dès que la nouvelle version est en cache, elle prend la main
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (e) => {
