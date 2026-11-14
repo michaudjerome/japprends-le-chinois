@@ -1,5 +1,7 @@
 import { openDb, askPersistence } from './db.js';
 import { loadSettings } from './settings.js';
+import { registerSW } from './update.js';
+import { syncContent } from './content.js';
 import * as home from './views/home.js';
 import * as settingsView from './views/settings.js';
 import * as sources from './views/sources.js';
@@ -46,27 +48,5 @@ async function route() {
   addEventListener('hashchange', route);
   route();
   registerSW();
+  syncContent().then((n) => { if (n) route(); }).catch(() => {});
 })();
-
-// Hors ligne : le service worker garde l'application dans le téléphone ; une nouvelle version s'annonce par une barre
-function registerSW() {
-  if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
-  const offer = (w) => {
-    if (!w || document.querySelector('.update-bar')) return;
-    const bar = document.createElement('div');
-    bar.className = 'update-bar';
-    bar.innerHTML = '<span>Nouvelle version disponible</span><button>Mettre à jour</button>';
-    bar.querySelector('button').onclick = () => w.postMessage('skip');
-    document.body.append(bar);
-  };
-  let reloading = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => { if (!reloading) { reloading = true; location.reload(); } });
-  navigator.serviceWorker.register('sw.js').then((reg) => {
-    if (reg.waiting && navigator.serviceWorker.controller) offer(reg.waiting);
-    reg.addEventListener('updatefound', () => {
-      const w = reg.installing;
-      w?.addEventListener('statechange', () => { if (w.state === 'installed' && navigator.serviceWorker.controller) offer(w); });
-    });
-    setInterval(() => reg.update().catch(() => {}), 30 * 60000);
-  }).catch(() => {});
-}
