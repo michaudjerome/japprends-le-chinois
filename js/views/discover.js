@@ -73,7 +73,7 @@ export async function render(el) {
 
   const drawBatch = () => {
     if (!st.batch.length) {
-      $('batch').innerHTML = `<p class="muted pad-s">Vous avez tous les mots du HSK ${LV(st.level)}. 好！</p>`;
+      $('batch').innerHTML = `<p class="muted pad-s">Tu as tous les mots du HSK ${LV(st.level)}. 好！</p>`;
       return;
     }
     $('batch').innerHTML = `<div class="list">${st.batch.map((w, k) => `
@@ -97,7 +97,7 @@ export async function render(el) {
       b.disabled = true;
       const n = await addWords(p.words.map(([hanzi, pinyin, fr]) => ({ hanzi, pinyin, fr })), p.name);
       owned = new Set((await allCards()).map((c) => c.hanzi));
-      celebrate(n ? `${n} mot${n > 1 ? 's' : ''} ajouté${n > 1 ? 's' : ''} à « ${p.name} »` : 'Déjà dans vos cartes');
+      celebrate(n ? `${n} mot${n > 1 ? 's' : ''} ajouté${n > 1 ? 's' : ''} à « ${p.name} »` : 'Déjà dans tes cartes');
       drawPacks(); drawBatch();
     } else if (b.dataset.level) {
       st.level = +b.dataset.level; kvSet('discoverLevel', st.level);

@@ -16,7 +16,7 @@ export async function render(el, params) {
 
   if (libre && !params.paquet) {
     el.innerHTML = `${topBar('Révision libre')}
-    <div class="pad"><p class="muted">Choisissez un paquet à parcourir. La révision libre ne change pas le calendrier de vos cartes.</p>
+    <div class="pad"><p class="muted">Choisis un paquet à parcourir. La révision libre ne change pas le calendrier de tes cartes.</p>
     <div class="list" style="margin-top:14px">
       <a class="row" href="#/reviser?libre=1&paquet=all"><span>Toutes mes cartes<small>${cards.length} carte${cards.length > 1 ? 's' : ''}</small></span><span class="muted" style="width:18px">${icon('chevron')}</span></a>
       ${deckList.map((d) => { const n = cards.filter((c) => c.deckId === d.id).length; return n ? `<a class="row" href="#/reviser?libre=1&paquet=${d.id}"><span>${esc(d.name)}<small>${n} carte${n > 1 ? 's' : ''}</small></span><span class="muted" style="width:18px">${icon('chevron')}</span></a>` : ''; }).join('')}
@@ -35,7 +35,7 @@ export async function render(el, params) {
     el.innerHTML = `${topBar('Révision')}
     <div class="empty"><span class="zh" aria-hidden="true">${hasCards ? '好' : '复'}</span>
       <p class="serif" style="font-size:20px;font-weight:700">${hasCards ? 'Tout est révisé pour aujourd\'hui' : 'Aucune carte à réviser'}</p>
-      <p class="muted">${hasCards ? 'Revenez demain : les cartes reviendront au bon moment.' : 'Ajoutez des mots depuis Découvrir ou Créer.'}</p>
+      <p class="muted">${hasCards ? 'Reviens demain : les cartes reviendront au bon moment.' : 'Ajoute des mots depuis Découvrir ou Créer.'}</p>
       ${hasCards ? '<a class="btn ghost" href="#/reviser?libre=1" style="max-width:240px;margin-top:10px">Révision libre</a><a class="btn" href="#/jouer" style="max-width:240px">Jouer au quiz</a>'
         : '<a class="btn" href="#/decouvrir" style="max-width:240px;margin-top:10px">Découvrir des mots</a>'}</div>`;
     return;
@@ -52,7 +52,7 @@ export async function render(el, params) {
         <span class="zh fc-h">${esc(c.hanzi)}</span>
         ${st.stage >= 1 ? `<span class="py fc-p">${toneHtml(c.pinyin)}</span>` : ''}
         ${st.stage >= 2 ? `<span class="fc-f">${esc(c.fr)}</span>${c.example ? `<span class="fc-ex">${esc(c.example)}</span>` : ''}` : ''}
-        ${st.stage < 2 ? `<span class="fc-hint">${st.stage === 0 ? 'Touchez pour voir le pinyin' : 'Touchez pour voir le français'}</span>` : ''}
+        ${st.stage < 2 ? `<span class="fc-hint">${st.stage === 0 ? 'Touche pour voir le pinyin' : 'Touche pour voir le français'}</span>` : ''}
       </button>
       ${st.stage >= 1 ? `<div class="fc-tools">
         ${AUDIO_ENABLED ? `<button class="chip" data-say>${icon('sound')} Écouter</button>` : ''}

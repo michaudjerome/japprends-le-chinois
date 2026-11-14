@@ -17,7 +17,7 @@ function voiceSection(voice) {
   return `<section class="group"><h2>Voix chinoise</h2>
     <div class="list"><div class="row"><span>${voice ? `Voix installée<small>${esc(voice.name)}</small>` : 'Aucune voix chinoise trouvée<small>La prononciation ne fonctionnera pas.</small>'}</span>
       ${voice ? `<button class="chip" data-test>${icon('sound')} 你好</button>` : ''}</div></div>
-    ${voice ? '' : '<p class="hint" style="margin-top:8px">Sur Android : Paramètres › Système › Langues › Synthèse vocale › moteur Google › Installer les données vocales › Chinois (Chine). Puis rouvrez l\'application. Les intitulés varient selon les téléphones.</p>'}
+    ${voice ? '' : '<p class="hint" style="margin-top:8px">Sur Android : Paramètres › Système › Langues › Synthèse vocale › moteur Google › Installer les données vocales › Chinois (Chine). Puis rouvre l\'application. Les intitulés varient selon les téléphones.</p>'}
   </section>`;
 }
 
@@ -27,6 +27,9 @@ export async function render(el) {
   const draw = () => {
     el.innerHTML = `${topBar('Réglages')}
     <div class="pad">
+      <section class="group" style="margin-top:6px"><h2>Ton prénom</h2>
+        <div class="list"><div class="row"><input id="name" class="plain-input" maxlength="30" autocomplete="given-name" placeholder="Pour les petits mots d'accueil" value="${esc(settings.name || '')}"></div></div>
+      </section>
       <section class="group"><h2>Thème</h2>
         <div class="seg">
           <button data-theme-btn="zen" aria-pressed="${settings.theme === 'zen'}">Zen papier</button>
@@ -55,7 +58,7 @@ export async function render(el) {
           <button class="row" data-export><span>Exporter mes cartes<small>${last ? `Dernière sauvegarde le ${new Date(last).toLocaleDateString('fr-FR')}` : 'Jamais sauvegardé'}</small></span><span class="muted" style="width:18px">${icon('chevron')}</span></button>
           <label class="row" style="cursor:pointer"><span>Importer une sauvegarde<small>Fusionne avec les cartes du téléphone</small></span><input type="file" accept="application/json,.json" id="imp" hidden><span class="muted" style="width:18px">${icon('chevron')}</span></label>
         </div>
-        <p class="hint" style="margin-top:8px">Les cartes ne vivent que dans ce téléphone. Gardez le fichier exporté en lieu sûr (Drive, e-mail) : il permet de tout récupérer sur un nouveau téléphone.</p>
+        <p class="hint" style="margin-top:8px">Les cartes ne vivent que dans ce téléphone. Garde le fichier exporté en lieu sûr (Drive, e-mail) : il permet de tout récupérer sur un nouveau téléphone.</p>
       </section>
       <section class="group"><h2>À propos</h2>
         <div class="list">
@@ -68,6 +71,7 @@ export async function render(el) {
       </section>
       <p class="foot">J'apprends le chinois · version ${APP_VERSION}</p>
     </div>`;
+    el.querySelector('#name').onchange = async (e) => { await setSetting('name', e.target.value.trim()); toast(e.target.value.trim() ? `C'est noté, ${e.target.value.trim()} !` : 'Prénom effacé'); };
     el.querySelector('#imp').onchange = async (e) => {
       const f = e.target.files[0]; if (!f) return;
       try { const r = await importBackup(f); toast(`Import réussi : ${r.added} carte${r.added > 1 ? 's' : ''} ajoutée${r.added > 1 ? 's' : ''}, ${r.updated} mise${r.updated > 1 ? 's' : ''} à jour`); draw(); }
@@ -82,7 +86,7 @@ export async function render(el) {
     else if (b.dataset.toggle) await setSetting(b.dataset.toggle, !settings[b.dataset.toggle]);
     else if (b.dataset.set) await setSetting(b.dataset.set, +b.dataset.val);
     else if (b.hasAttribute('data-test')) return speak('你好');
-    else if (b.hasAttribute('data-update')) { const r = await checkForUpdate(); toast(r === 'à jour' ? 'Vous avez la dernière version' : r === 'en cours' ? 'Mise à jour en cours : l\'application va redémarrer' : 'Vérification impossible hors ligne'); return; }
+    else if (b.hasAttribute('data-update')) { const r = await checkForUpdate(); toast(r === 'à jour' ? 'Tu as la dernière version' : r === 'en cours' ? 'Mise à jour en cours : l\'application va redémarrer' : 'Vérification impossible hors ligne'); return; }
     else if (b.hasAttribute('data-export')) { const n = await exportBackup(); toast(`${n} carte${n > 1 ? 's' : ''} exportée${n > 1 ? 's' : ''}`); }
     else return;
     draw();

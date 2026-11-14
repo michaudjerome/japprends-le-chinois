@@ -41,7 +41,7 @@ export async function render(el, params) {
     if (!cards.length) {
       $('list').innerHTML = `<div class="empty"><span class="zh" aria-hidden="true">写</span>
         <p class="serif" style="font-size:20px;font-weight:700">Aucune carte pour l'instant</p>
-        <p class="muted">Cherchez un mot en chinois, en pinyin ou en français : la carte se remplit toute seule.</p>
+        <p class="muted">Cherche un mot en chinois, en pinyin ou en français : la carte se remplit toute seule.</p>
         <a class="btn" href="#/creer" style="max-width:240px;margin-top:10px">Créer ma première carte</a></div>`;
       return;
     }
@@ -66,7 +66,7 @@ export async function render(el, params) {
       case 'close': st.manage = false; st.confirm = null; break;
       case 'rename': {
         const name = $('dname').value.trim();
-        if (!name) return toast('Donnez un nom au paquet');
+        if (!name) return toast('Donne un nom au paquet');
         await renameDeck(d, name); toast('Paquet renommé'); st.manage = false; break;
       }
       case 'delete':

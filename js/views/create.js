@@ -105,12 +105,12 @@ export async function render(el, params) {
         applyReading();
       } else {
         if (st.pinyinAuto) f.pinyin.value = guessPinyin(h);
-        notes.push('Mot absent du dictionnaire : pinyin proposé caractère par caractère, vérifiez-le.');
+        notes.push('Mot absent du dictionnaire : pinyin proposé caractère par caractère, vérifie-le.');
       }
       const dup = (await findByHanzi(f.hanzi.value.trim())).filter((c) => c.id !== editing?.id);
-      if (dup.length) notes.push(`Déjà dans vos cartes : ${dup.map((c) => `<a href="#/creer/${c.id}">${esc(c.pinyin || c.hanzi)} · ${esc(c.fr)}</a>`).join(', ')}.`);
+      if (dup.length) notes.push(`Déjà dans tes cartes : ${dup.map((c) => `<a href="#/creer/${c.id}">${esc(c.pinyin || c.hanzi)} · ${esc(c.fr)}</a>`).join(', ')}.`);
     } else if (h) {
-      notes.push('Saisissez des caractères chinois (clavier chinois du téléphone, ou cherchez le mot ci-dessus).');
+      notes.push('Saisis des caractères chinois (clavier chinois du téléphone, ou cherche le mot ci-dessus).');
     }
     hint.hidden = !notes.length;
     hint.innerHTML = notes.join('<br>');
@@ -177,7 +177,7 @@ export async function render(el, params) {
       if (!q) { results.innerHTML = ''; return; }
       if (!isLoaded()) {
         results.innerHTML = '<p class="muted pad-s">Chargement du dictionnaire…</p>';
-        try { await loadDict(); } catch { results.innerHTML = '<p class="muted pad-s">Le dictionnaire n\'a pas pu être chargé. Vérifiez la connexion et réessayez.</p>'; return; }
+        try { await loadDict(); } catch { results.innerHTML = '<p class="muted pad-s">Le dictionnaire n\'a pas pu être chargé. Vérifie la connexion et réessaie.</p>'; return; }
         if ($('q').value.trim() !== q) return;
       }
       const list = search(q);
@@ -239,10 +239,10 @@ export async function render(el, params) {
     e.preventDefault();
     clearTimeout(checkTimer);
     const hanzi = f.hanzi.value.trim();
-    if (!hanzi || !hasHan(hanzi)) { toast('Ajoutez au moins un caractère chinois'); f.hanzi.focus(); return; }
+    if (!hanzi || !hasHan(hanzi)) { toast('Ajoute au moins un caractère chinois'); f.hanzi.focus(); return; }
     if (!st.entry && !editing) await checkHanzi();
     const fr = f.fr.value.trim();
-    if (!fr) { toast('Ajoutez une traduction'); f.fr.focus(); return; }
+    if (!fr) { toast('Ajoute une traduction'); f.fr.focus(); return; }
     const data = { hanzi: f.hanzi.value.trim(), pinyin: f.pinyin.value.trim(), fr, example: f.ex.value.trim(), deckId: st.deckId };
     await saveCard(data, editing);
     await kvSet('lastDeck', st.deckId);

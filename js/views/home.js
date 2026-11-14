@@ -3,8 +3,12 @@ import { icon, dayKey } from '../ui.js';
 import { todayQueue, isNew } from '../srs.js';
 import { settings } from '../settings.js';
 import { backupDue } from '../backup.js';
+import { greeting } from '../greet.js';
+import { setSetting } from '../settings.js';
+import { esc } from '../ui.js';
+import { kvGet, kvSet } from '../db.js';
 
-function greeting() {
+function zhGreeting() {
   const h = new Date().getHours();
   if (h < 12) return ['早上好', 'zǎoshang hǎo', 'Bonjour !'];
   if (h < 18) return ['下午好', 'xiàwǔ hǎo', 'Bon après-midi !'];
@@ -29,13 +33,16 @@ export async function render(el) {
   const mastered = cards.filter((c) => (c.stability ?? 0) >= 21).length;
   const today = logs.filter((l) => l.day === dayKey()).length;
   const goal = settings.dailyGoal;
-  const [zh, py, fr] = greeting();
+  const [zh, py] = zhGreeting();
+  const st = streak(logs);
+  const g = greeting(settings.name, { cards: cards.length, due, streak: st, goalReached: cards.length > 0 && today >= goal });
+  const askName = !settings.name && !(await kvGet('nameSkipped'));
   const minutes = Math.max(1, Math.round(due * 15 / 60));
   const remind = await backupDue(cards);
 
   const block = cards.length === 0
     ? `<div class="n" style="font-size:24px">Bienvenue</div>
-       <div class="l">Aucune carte pour l'instant. Commencez par un paquet de mots pour débuter.</div>
+       <div class="l">Aucune carte pour l'instant. Commence par un paquet de mots pour débuter.</div>
        <a class="btn" href="#/decouvrir">Choisir mes premiers mots</a>`
     : due === 0
       ? `<div class="n">0</div><div class="l">carte à réviser : tout est à jour</div>
@@ -50,7 +57,12 @@ export async function render(el) {
       <a class="icon-btn" href="#/reglages" aria-label="Réglages">${icon('gear')}</a>
     </div>
     <div class="hello"><span class="zh" style="font-size:16px;color:var(--ink)">${zh}</span> · ${py}</div>
-    <h1 class="hello2">${fr}</h1>
+    <h1 class="hello2">${esc(g.title)}</h1>
+    <p class="mood">${esc(g.line)}</p>
+    ${askName ? `<form class="ask-name" id="askName">
+      <label for="nm">Comment t'appelles-tu ?</label>
+      <div><input id="nm" maxlength="30" autocomplete="given-name" placeholder="Ton prénom"><button class="btn" type="submit">OK</button></div>
+      <button type="button" class="linkish" id="skipName">Plus tard</button></form>` : ''}
     <div class="today">${block}
       ${cards.length ? `<div class="goal light"><div class="goal-bar"><i style="width:${Math.min(100, (today / goal) * 100)}%"></i></div>
         <small>${today >= goal ? 'Objectif du jour atteint 好！' : `Objectif du jour : ${today} / ${goal}`}</small></div>` : ''}
@@ -62,10 +74,15 @@ export async function render(el) {
       <a class="mode" href="#/creer"><span class="zh">写</span><span>Créer</span></a>
     </nav>
     <div class="stats">
-      <div><b>${streak(logs)}</b>jours de suite</div>
+      <div><b>${st}</b>jour${st > 1 ? 's' : ''} de suite</div>
       <a href="#/cartes"><b>${cards.length}</b>cartes</a>
       <div><b>${mastered}</b>maîtrisées</div>
     </div>
-    ${remind ? `<a class="nudge" href="#/reglages">Pensez à sauvegarder vos cartes : un fichier suffit pour ne rien perdre.</a>` : ''}
+    ${remind ? `<a class="nudge" href="#/reglages">Pense à sauvegarder tes cartes : un fichier suffit pour ne rien perdre.</a>` : ''}
   </div>`;
+  const f = el.querySelector('#askName');
+  if (f) {
+    f.onsubmit = async (e) => { e.preventDefault(); const v = el.querySelector('#nm').value.trim(); if (!v) return; await setSetting('name', v); render(el); };
+    el.querySelector('#skipName').onclick = async () => { await kvSet('nameSkipped', true); render(el); };
+  }
 }

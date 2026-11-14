@@ -9,7 +9,7 @@ const ALL_TYPES = [
   ['hz-fr', '字 → français', 'Que veut dire ce mot ?'],
   ['hz-py', '字 → pinyin', 'Comment se prononce ce mot ?'],
   ['fr-hz', 'français → 字', 'Quel caractère correspond ?'],
-  ['au-hz', '🔊 → 字', 'Quel mot entendez-vous ?'],
+  ['au-hz', '🔊 → 字', 'Quel mot entends-tu ?'],
 ];
 const TYPES = ALL_TYPES.filter(([k]) => AUDIO_ENABLED || k !== 'au-hz');
 const N = 10;
@@ -54,11 +54,11 @@ export async function render(el) {
     <div class="pad quiz">
       <div class="empty" style="flex:none;padding:8px 0 4px"><span class="zh" aria-hidden="true">玩</span>
         <p class="serif" style="font-size:22px;font-weight:700">Quiz éclair</p>
-        <p class="muted">${N} questions, 3 choix. Une partie ne change pas vos révisions.</p></div>
+        <p class="muted">${N} questions, 3 choix. Une partie ne change pas tes révisions.</p></div>
       <section class="group"><h2>Les mots</h2><div class="chips" id="src">
         <button class="chip" data-src="mine" aria-pressed="${st.source === 'mine'}" ${cards.length < 6 ? 'disabled' : ''}>Mes cartes · ${cards.length}</button>
         ${[1, 2, 3, 4, 5, 6].map((l) => `<button class="chip" data-src="${l}" aria-pressed="${st.source === String(l)}">HSK ${l}</button>`).join('')}
-      </div>${cards.length < 6 ? '<p class="hint" style="margin-top:8px">Avec au moins 6 cartes, vous pourrez jouer avec les vôtres.</p>' : ''}</section>
+      </div>${cards.length < 6 ? '<p class="hint" style="margin-top:8px">Avec au moins 6 cartes, tu pourras jouer avec les tiennes.</p>' : ''}</section>
       <section class="group"><h2>Le défi</h2><div class="list">
         ${TYPES.map(([k, label, q]) => `<button class="row" data-type="${k}" ${k === 'au-hz' && !hasVoice ? 'disabled' : ''}>
           <span>${label}<small>${k === 'au-hz' && !hasVoice ? 'Voix chinoise absente : voir Réglages' : q}</small></span>
@@ -127,7 +127,7 @@ export async function render(el) {
       el.innerHTML = `${topBar('Résultat', { back: `#/jouer?n=${Date.now()}` })}
       <div class="empty victory">
         <div class="cheer-stamp static ${win ? '' : 'soft'}"><span class="zh">${win ? '胜' : '加'}</span></div>
-        <p class="serif" style="font-size:24px;font-weight:700;margin-top:10px">${g.score === N ? 'Sans faute !' : win ? 'Victoire !' : 'Continuez, 加油 !'}</p>
+        <p class="serif" style="font-size:24px;font-weight:700;margin-top:10px">${g.score === N ? 'Sans faute !' : win ? 'Victoire !' : 'Continue, 加油 !'}</p>
         <p class="muted">${g.score} / ${N}${g.maxCombo >= 3 ? ` · meilleure série × ${g.maxCombo}` : ''}${record && g.score ? ' · nouveau record' : ''}</p>
         ${g.missed.length ? `<div class="list" style="width:100%;margin-top:12px;text-align:left">${g.missed.map((w) => `<div class="row res"><span class="zh res-h">${esc(w.hanzi)}</span><span class="res-t"><span class="py">${toneHtml(w.pinyin)}</span><small>${esc(w.fr)}</small></span></div>`).join('')}</div>` : ''}
         <button class="btn" data-again style="max-width:240px;margin-top:14px">Rejouer</button>
