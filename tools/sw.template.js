@@ -4,8 +4,9 @@ const CACHE = `jlc-${V}`;
 const CORE = __CORE__;
 
 self.addEventListener('install', (e) => {
-  // Mise à jour automatique : dès que la nouvelle version est en cache, elle prend la main
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
+  // Mise à jour automatique : dès que la nouvelle version est en cache, elle prend la main.
+  // cache: 'reload' contourne le cache HTTP du navigateur (sinon index.html peut rester l'ancien jusqu'à 10 min)
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE.map((u) => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (e) => {
