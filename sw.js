@@ -1,41 +1,41 @@
 // Service worker généré par tools/stamp.py : ne pas modifier à la main
-const V = '7c738f5c';
+const V = '43a72db6';
 const CACHE = `jlc-${V}`;
 const CORE = [
  "./",
  "index.html",
  "manifest.webmanifest",
- "css/base.css?v=7c738f5c",
- "css/themes.css?v=7c738f5c",
- "js/app.js?v=7c738f5c",
- "js/backup.js?v=7c738f5c",
- "js/cards.js?v=7c738f5c",
- "js/content.js?v=7c738f5c",
- "js/db.js?v=7c738f5c",
- "js/dict.js?v=7c738f5c",
- "js/greet.js?v=7c738f5c",
- "js/settings.js?v=7c738f5c",
- "js/sheet.js?v=7c738f5c",
- "js/speech.js?v=7c738f5c",
- "js/srs.js?v=7c738f5c",
- "js/strokes.js?v=7c738f5c",
- "js/ui.js?v=7c738f5c",
- "js/update.js?v=7c738f5c",
- "js/version.js?v=7c738f5c",
- "js/views/cards.js?v=7c738f5c",
- "js/views/create.js?v=7c738f5c",
- "js/views/discover.js?v=7c738f5c",
- "js/views/home.js?v=7c738f5c",
- "js/views/quiz.js?v=7c738f5c",
- "js/views/review.js?v=7c738f5c",
- "js/views/settings.js?v=7c738f5c",
- "js/views/sources.js?v=7c738f5c",
- "js/vendor/hanzi-writer.mjs?v=7c738f5c",
- "js/vendor/ts-fsrs.mjs?v=7c738f5c",
- "data/dict-fr.json?v=7c738f5c",
- "data/packs.json?v=7c738f5c",
- "data/traits-1.json?v=7c738f5c",
- "data/traits-index.json?v=7c738f5c",
+ "css/base.css?v=43a72db6",
+ "css/themes.css?v=43a72db6",
+ "js/app.js?v=43a72db6",
+ "js/backup.js?v=43a72db6",
+ "js/cards.js?v=43a72db6",
+ "js/content.js?v=43a72db6",
+ "js/db.js?v=43a72db6",
+ "js/dict.js?v=43a72db6",
+ "js/greet.js?v=43a72db6",
+ "js/settings.js?v=43a72db6",
+ "js/sheet.js?v=43a72db6",
+ "js/speech.js?v=43a72db6",
+ "js/srs.js?v=43a72db6",
+ "js/strokes.js?v=43a72db6",
+ "js/ui.js?v=43a72db6",
+ "js/update.js?v=43a72db6",
+ "js/version.js?v=43a72db6",
+ "js/views/cards.js?v=43a72db6",
+ "js/views/create.js?v=43a72db6",
+ "js/views/discover.js?v=43a72db6",
+ "js/views/home.js?v=43a72db6",
+ "js/views/quiz.js?v=43a72db6",
+ "js/views/review.js?v=43a72db6",
+ "js/views/settings.js?v=43a72db6",
+ "js/views/sources.js?v=43a72db6",
+ "js/vendor/hanzi-writer.mjs?v=43a72db6",
+ "js/vendor/ts-fsrs.mjs?v=43a72db6",
+ "data/dict-fr.json?v=43a72db6",
+ "data/packs.json?v=43a72db6",
+ "data/traits-1.json?v=43a72db6",
+ "data/traits-index.json?v=43a72db6",
  "fonts/fraunces-500.woff2",
  "fonts/fraunces-700.woff2",
  "fonts/inter-400.woff2",
@@ -49,8 +49,9 @@ const CORE = [
 ];
 
 self.addEventListener('install', (e) => {
-  // Mise à jour automatique : dès que la nouvelle version est en cache, elle prend la main
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
+  // Mise à jour automatique : dès que la nouvelle version est en cache, elle prend la main.
+  // cache: 'reload' contourne le cache HTTP du navigateur (sinon index.html peut rester l'ancien jusqu'à 10 min)
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE.map((u) => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (e) => {
