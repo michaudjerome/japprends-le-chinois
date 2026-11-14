@@ -4,6 +4,7 @@ import { APP_VERSION } from '../version.js';
 import { voiceReady, speak, AUDIO_ENABLED } from '../speech.js';
 import { exportBackup, importBackup } from '../backup.js';
 import { kvGet } from '../db.js';
+import { checkForUpdate } from '../update.js';
 
 const ACCENTS = [
   ['seal', '#B3352B', 'Rouge sceau'], ['jade', '#2E7D6B', 'Jade'],
@@ -61,6 +62,10 @@ export async function render(el) {
           <a class="row" href="#/sources"><span>Sources et licences<small>Dictionnaire, listes HSK, ordre des traits, polices</small></span><span class="muted" style="width:18px">${icon('chevron')}</span></a>
         </div>
       </section>
+      <section class="group"><h2>Version</h2>
+        <div class="list"><button class="row" data-update><span>Rechercher une mise à jour<small>Version ${APP_VERSION} · ${esc(window.APP_STAMP || '')}</small></span><span class="muted" style="width:18px">${icon('chevron')}</span></button></div>
+        <p class="hint" style="margin-top:8px">Les mises à jour s'installent toutes seules à l'ouverture de l'application. Ce bouton force la vérification.</p>
+      </section>
       <p class="foot">J'apprends le chinois · version ${APP_VERSION}</p>
     </div>`;
     el.querySelector('#imp').onchange = async (e) => {
@@ -77,6 +82,7 @@ export async function render(el) {
     else if (b.dataset.toggle) await setSetting(b.dataset.toggle, !settings[b.dataset.toggle]);
     else if (b.dataset.set) await setSetting(b.dataset.set, +b.dataset.val);
     else if (b.hasAttribute('data-test')) return speak('你好');
+    else if (b.hasAttribute('data-update')) { const r = await checkForUpdate(); toast(r === 'à jour' ? 'Vous avez la dernière version' : r === 'en cours' ? 'Mise à jour en cours : l\'application va redémarrer' : 'Vérification impossible hors ligne'); return; }
     else if (b.hasAttribute('data-export')) { const n = await exportBackup(); toast(`${n} carte${n > 1 ? 's' : ''} exportée${n > 1 ? 's' : ''}`); }
     else return;
     draw();
