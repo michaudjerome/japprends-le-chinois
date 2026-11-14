@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>J'apprends le chinois</title>
+<meta name="description" content="Flashcards de chinois simplifié, 100 % hors ligne.">
+<meta name="theme-color" content="#F4EEE2">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preload" href="fonts/kai.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/themes.css">
+<script>
+  // Thème appliqué avant le premier rendu pour éviter un flash de couleurs
+  try { const s = JSON.parse(localStorage.getItem('jlc-theme') || '{}');
+    if (s.theme) document.documentElement.dataset.theme = s.theme;
+    if (s.accent) document.documentElement.dataset.accent = s.accent; } catch (e) {}
+</script>
+</head>
+<body>
+<main id="app" aria-live="polite"></main>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
