@@ -65,7 +65,7 @@ export async function render(el) {
       <button type="button" class="linkish" id="skipName">Plus tard</button></form>` : ''}
     <div class="today">${block}
       ${cards.length ? `<div class="goal light"><div class="goal-bar"><i style="width:${Math.min(100, (today / goal) * 100)}%"></i></div>
-        <small>${today >= goal ? 'Objectif du jour atteint 好！' : `Objectif du jour : ${today} / ${goal}`}</small></div>` : ''}
+        <small>${today >= goal ? 'Objectif du jour atteint 好！🏆' : `Objectif du jour : ${today} / ${goal}`}</small></div>` : ''}
     </div>
     <nav class="modes" aria-label="Modes">
       <a class="mode" href="#/reviser"><span class="zh">复</span><span>Réviser</span></a>

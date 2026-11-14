@@ -97,7 +97,7 @@ export async function render(el) {
       b.disabled = true;
       const n = await addWords(p.words.map(([hanzi, pinyin, fr]) => ({ hanzi, pinyin, fr })), p.name);
       owned = new Set((await allCards()).map((c) => c.hanzi));
-      celebrate(n ? `${n} mot${n > 1 ? 's' : ''} ajouté${n > 1 ? 's' : ''} à « ${p.name} »` : 'Déjà dans tes cartes');
+      celebrate(n ? `${n} mot${n > 1 ? 's' : ''} ajouté${n > 1 ? 's' : ''} à « ${p.name} » 🌸` : 'Déjà dans tes cartes');
       drawPacks(); drawBatch();
     } else if (b.dataset.level) {
       st.level = +b.dataset.level; kvSet('discoverLevel', st.level);

@@ -127,7 +127,7 @@ export async function render(el) {
       el.innerHTML = `${topBar('Résultat', { back: `#/jouer?n=${Date.now()}` })}
       <div class="empty victory">
         <div class="cheer-stamp static ${win ? '' : 'soft'}"><span class="zh">${win ? '胜' : '加'}</span></div>
-        <p class="serif" style="font-size:24px;font-weight:700;margin-top:10px">${g.score === N ? 'Sans faute !' : win ? 'Victoire !' : 'Continue, 加油 !'}</p>
+        <p class="serif" style="font-size:24px;font-weight:700;margin-top:10px">${g.score === N ? 'Sans faute ! 🌟' : win ? 'Victoire ! 🎉' : 'Continue, 加油 ! 💪🌻'}</p>
         <p class="muted">${g.score} / ${N}${g.maxCombo >= 3 ? ` · meilleure série × ${g.maxCombo}` : ''}${record && g.score ? ' · nouveau record' : ''}</p>
         ${g.missed.length ? `<div class="list" style="width:100%;margin-top:12px;text-align:left">${g.missed.map((w) => `<div class="row res"><span class="zh res-h">${esc(w.hanzi)}</span><span class="res-t"><span class="py">${toneHtml(w.pinyin)}</span><small>${esc(w.fr)}</small></span></div>`).join('')}</div>` : ''}
         <button class="btn" data-again style="max-width:240px;margin-top:14px">Rejouer</button>

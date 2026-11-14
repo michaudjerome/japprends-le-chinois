@@ -34,7 +34,7 @@ export async function render(el, params) {
     const hasCards = cards.length > 0;
     el.innerHTML = `${topBar('Révision')}
     <div class="empty"><span class="zh" aria-hidden="true">${hasCards ? '好' : '复'}</span>
-      <p class="serif" style="font-size:20px;font-weight:700">${hasCards ? 'Tout est révisé pour aujourd\'hui' : 'Aucune carte à réviser'}</p>
+      <p class="serif" style="font-size:20px;font-weight:700">${hasCards ? 'Tout est révisé pour aujourd\'hui ☀️' : 'Aucune carte à réviser'}</p>
       <p class="muted">${hasCards ? 'Reviens demain : les cartes reviendront au bon moment.' : 'Ajoute des mots depuis Découvrir ou Créer.'}</p>
       ${hasCards ? '<a class="btn ghost" href="#/reviser?libre=1" style="max-width:240px;margin-top:10px">Révision libre</a><a class="btn" href="#/jouer" style="max-width:240px">Jouer au quiz</a>'
         : '<a class="btn" href="#/decouvrir" style="max-width:240px;margin-top:10px">Découvrir des mots</a>'}</div>`;
@@ -70,10 +70,10 @@ export async function render(el, params) {
     el.innerHTML = `${topBar('Révision terminée')}
     <div class="empty victory">
       <div class="cheer-stamp static"><span class="zh">胜</span></div>
-      <p class="serif" style="font-size:24px;font-weight:700;margin-top:10px">Victoire !</p>
+      <p class="serif" style="font-size:24px;font-weight:700;margin-top:10px">Victoire ! 🎉</p>
       <p class="muted">${st.done} carte${st.done > 1 ? 's' : ''} révisée${st.done > 1 ? 's' : ''} · ${pct} % réussies · ${Math.max(1, Math.round((Date.now() - st.started) / 60000))} min</p>
       ${libre ? '' : `<div class="goal"><div class="goal-bar"><i style="width:${Math.min(100, (n / goal) * 100)}%"></i></div>
-        <small>${n >= goal ? 'Objectif du jour atteint' : `Objectif du jour : ${n} / ${goal}`}</small></div>`}
+        <small>${n >= goal ? 'Objectif du jour atteint 🏆' : `Objectif du jour : ${n} / ${goal}`}</small></div>`}
       <a class="btn" href="#/" style="max-width:240px;margin-top:14px">Retour à l'accueil</a>
       <a class="btn ghost" href="#/jouer" style="max-width:240px">Jouer au quiz</a></div>`;
   };
