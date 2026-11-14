@@ -8,7 +8,7 @@ const flat = (s) => strip(s).replace(/[\s'’·\-1-5]/g, '').replace(/v/g, 'u');
 export const hasHan = (s) => /\p{Script=Han}/u.test(s);
 
 export function loadDict() {
-  loading ??= fetch('data/dict-fr.json').then((r) => {
+  loading ??= fetch('data/dict-fr.json?v=' + (window.APP_STAMP || '')).then((r) => {
     if (!r.ok) throw new Error('Dictionnaire introuvable');
     return r.json();
   }).then((d) => {
