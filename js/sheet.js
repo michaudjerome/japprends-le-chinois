@@ -25,7 +25,7 @@ export function openStrokes(word) {
 
   const draw = async () => {
     wrap.querySelectorAll('[data-i]').forEach((b) => b.setAttribute('aria-pressed', +b.dataset.i === i));
-    msg.textContent = mode === 'anim' ? 'Regardez l\'ordre des traits.' : 'À vous : tracez chaque trait dans l\'ordre.';
+    msg.textContent = mode === 'anim' ? 'Regarde l\'ordre des traits.' : 'À toi : trace chaque trait dans l\'ordre.';
     const w = await writer(box, chars[i], {
       size, mode,
       onDone: (s) => {

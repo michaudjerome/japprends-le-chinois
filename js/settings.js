@@ -1,6 +1,6 @@
 import { kvGet, kvSet } from './db.js';
 
-const DEFAULTS = { theme: 'zen', accent: 'seal', tones: true, autoplay: true, newPerDay: 10, dailyGoal: 20 };
+const DEFAULTS = { theme: 'zen', accent: 'seal', tones: true, autoplay: true, newPerDay: 10, dailyGoal: 20, name: '' };
 export const settings = { ...DEFAULTS };
 
 export async function loadSettings() {
