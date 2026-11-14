@@ -35,7 +35,7 @@ export function toast(msg) {
 export const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
 // Petite victoire : un sceau d'encre qui se pose, avec des éclats autour
-const CHEERS = [['好', 'Bravo'], ['棒', 'Super'], ['对', 'Parfait']];
+const CHEERS = [['好', 'Bravo 🌟'], ['棒', 'Super ✨'], ['对', 'Parfait 🌻']];
 export function celebrate(sub = '', glyph) {
   const [zh, fr] = glyph ? [glyph, ''] : CHEERS[Math.floor(Math.random() * CHEERS.length)];
   document.querySelector('.cheer')?.remove();
