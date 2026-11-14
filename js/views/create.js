@@ -3,6 +3,8 @@ import { loadDict, isLoaded, search, lookup, guessPinyin, toneHtml, hasHan } fro
 import { decks, createDeck, findByHanzi, getCard, saveCard, deleteCard, DEFAULT_DECK } from '../cards.js';
 import { kvGet, kvSet } from '../db.js';
 import { topBar, icon, esc, toast, celebrate } from '../ui.js';
+import { speak } from '../speech.js';
+import { openStrokes } from '../sheet.js';
 
 const LEVEL = (l) => (l ? `<span class="lvl">HSK ${l === 7 ? '7-9' : l}</span>` : '');
 const shortDefs = (defs, n = 2) => defs.filter((d) => !/^(\(|variante|cf\.|voir )/i.test(d)).slice(0, n).join(', ') || defs[0] || '';
@@ -35,6 +37,7 @@ export async function render(el, params) {
         <div class="zh pv-h" id="pvH"></div>
         <div class="py" id="pvP"></div>
         <div class="pv-f" id="pvF"></div>
+        <div class="fc-tools"><button type="button" class="chip" data-say>${icon('sound')} Écouter</button><button type="button" class="chip" data-strokes>${icon('brush')} Traits</button></div>
       </div>
       <label class="field"><span>Caractères</span>
         <input id="hanzi" class="zh" lang="zh-CN" autocomplete="off" maxlength="12" required></label>
@@ -199,6 +202,8 @@ export async function render(el, params) {
   el.onclick = async (e) => {
     const b = e.target.closest('button');
     if (!b) return;
+    if (b.hasAttribute('data-say')) return speak(f.hanzi.value.trim());
+    if (b.hasAttribute('data-strokes')) return f.hanzi.value.trim() && openStrokes(f.hanzi.value.trim());
     if (b.dataset.pick != null) {
       const g = $('results')._list[+b.dataset.pick];
       openForm({ hanzi: g.hanzi, reading: +b.dataset.reading });
