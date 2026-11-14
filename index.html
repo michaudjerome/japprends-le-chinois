@@ -10,8 +10,8 @@
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="preload" href="fonts/kai.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="css/base.css?v=cb0ff4eb">
+<link rel="stylesheet" href="css/themes.css?v=cb0ff4eb">
 <script>
   // Thème appliqué avant le premier rendu pour éviter un flash de couleurs
   try { const s = JSON.parse(localStorage.getItem('jlc-theme') || '{}');
@@ -21,6 +21,8 @@
 </head>
 <body>
 <main id="app" aria-live="polite"></main>
-<script type="module" src="js/app.js"></script>
+<script type="importmap" id="stamp">{"imports":{"./js/app.js":"./js/app.js?v=cb0ff4eb","./js/cards.js":"./js/cards.js?v=cb0ff4eb","./js/db.js":"./js/db.js?v=cb0ff4eb","./js/dict.js":"./js/dict.js?v=cb0ff4eb","./js/settings.js":"./js/settings.js?v=cb0ff4eb","./js/ui.js":"./js/ui.js?v=cb0ff4eb","./js/version.js":"./js/version.js?v=cb0ff4eb","./js/views/cards.js":"./js/views/cards.js?v=cb0ff4eb","./js/views/create.js":"./js/views/create.js?v=cb0ff4eb","./js/views/home.js":"./js/views/home.js?v=cb0ff4eb","./js/views/settings.js":"./js/views/settings.js?v=cb0ff4eb","./js/views/soon.js":"./js/views/soon.js?v=cb0ff4eb","./js/views/sources.js":"./js/views/sources.js?v=cb0ff4eb"}}</script>
+<script>window.APP_STAMP = "cb0ff4eb";</script>
+<script type="module" src="js/app.js?v=cb0ff4eb"></script>
 </body>
 </html>
