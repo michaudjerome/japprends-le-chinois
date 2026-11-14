@@ -1,0 +1,26 @@
+/* Thèmes : Zen papier (défaut) et Nuit encre, plus 4 couleurs d'accent */
+:root, [data-theme="zen"] {
+  --paper: #F4EEE2; --paper2: #EDE5D5; --card: #FBF8F1;
+  --ink: #1E1B17; --muted: #857C6E; --line: #DCD2BF;
+  --block-bg: #1E1B17; --block-fg: #F4EEE2;
+  --dots: rgba(120,100,70,.06); --shadow: rgba(80,60,30,.08);
+  --t1: #C0392B; --t2: #D98324; --t3: #3F8F5A; --t4: #2F6DB5; --t0: #8F877A;
+  --accent: #B3352B; --accent-soft: #F1DDD6; --on-accent: #fff;
+  color-scheme: light;
+}
+[data-theme="nuit"] {
+  --paper: #16140F; --paper2: #1F1C16; --card: #221F19;
+  --ink: #EFE7D6; --muted: #A39A8A; --line: #3A342B;
+  --block-bg: #2C2820; --block-fg: #EFE7D6;
+  --dots: rgba(255,240,210,.035); --shadow: rgba(0,0,0,.35);
+  --t1: #E8695F; --t2: #EBA04E; --t3: #66BC83; --t4: #6A9FE0; --t0: #8C8577;
+  --accent: #D2584C; --accent-soft: #3B2420;
+  color-scheme: dark;
+}
+/* Couleurs d'accent */
+[data-accent="jade"]   { --accent: #2E7D6B; --accent-soft: #D6E8E1; }
+[data-accent="indigo"] { --accent: #34508C; --accent-soft: #DCE2F0; }
+[data-accent="prune"]  { --accent: #7B3B6B; --accent-soft: #EBDCE6; }
+[data-theme="nuit"][data-accent="jade"]   { --accent: #4FAE96; --accent-soft: #1D332D; }
+[data-theme="nuit"][data-accent="indigo"] { --accent: #7C98D6; --accent-soft: #232C42; }
+[data-theme="nuit"][data-accent="prune"]  { --accent: #C27BAF; --accent-soft: #3A2234; }
