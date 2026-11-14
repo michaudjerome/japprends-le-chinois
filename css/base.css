@@ -248,3 +248,14 @@ a { color: inherit; text-decoration: none; }
 .update-bar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom)); z-index: 22; display: flex; gap: 12px; align-items: center; background: var(--ink); color: var(--paper); padding: 10px 10px 10px 16px; border-radius: 16px; font-size: 14px; }
 .update-bar button { background: var(--accent); color: var(--on-accent); border-radius: 11px; padding: 8px 12px; font-weight: 600; }
 @keyframes up { from { transform: translateY(40px); opacity: 0; } }
+
+/* Accueil personnalisé */
+.mood { margin-top: 6px; font-size: 15px; line-height: 1.45; color: var(--ink); opacity: .82; }
+.ask-name { margin-top: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.ask-name label { font-weight: 600; }
+.ask-name div { display: flex; gap: 8px; }
+.ask-name input, .plain-input { flex: 1; min-width: 0; border: 1px solid var(--line); background: var(--paper); border-radius: 12px; padding: 11px 12px; font-size: 16px; outline: none; }
+.plain-input { width: 100%; background: transparent; border: 0; padding: 4px 0; }
+.ask-name input:focus { border-color: var(--accent); }
+.ask-name .btn { width: auto; padding: 11px 18px; }
+.ask-name .linkish { padding: 2px 0; align-self: flex-start; font-size: 13px; }
