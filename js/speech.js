@@ -1,4 +1,8 @@
 // Prononciation : synthèse vocale du téléphone (voix chinoise zh-CN), sans réseau
+// Audio mis en veille le 14/11/2026 (qualité des voix jugée insuffisante) : code conservé, rien n'est affiché ni prononcé.
+// Passer à true pour le réactiver.
+export const AUDIO_ENABLED = false;
+
 let voice = null;
 let ready;
 
@@ -21,7 +25,7 @@ export function voiceReady() {
 }
 
 export async function speak(text, rate = 0.85) {
-  if (!('speechSynthesis' in window) || !text) return false;
+  if (!AUDIO_ENABLED || !('speechSynthesis' in window) || !text) return false;
   const v = await voiceReady();
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
