@@ -4,9 +4,10 @@ Usage : python tools/stamp.py (depuis 03_APP)"""
 import hashlib, json, pathlib, re
 
 root = pathlib.Path(__file__).resolve().parent.parent
-files = sorted(p for p in (root / 'js').rglob('*.js'))
+files = sorted(p for p in (root / 'js').rglob('*.js')) + sorted((root / 'js').rglob('*.mjs'))
 h = hashlib.sha1()
-for p in files + [root / 'data' / 'dict-fr.json', root / 'css' / 'base.css', root / 'css' / 'themes.css']:
+DATA = sorted((root / 'data').glob('*.json'))
+for p in files + DATA + [root / 'css' / 'base.css', root / 'css' / 'themes.css']:
     h.update(p.read_bytes())
 v = h.hexdigest()[:8]
 imports = {f'./{p.relative_to(root).as_posix()}': f'./{p.relative_to(root).as_posix()}?v={v}' for p in files}
@@ -17,4 +18,12 @@ html = re.sub(r'href="css/(base|themes)\.css(\?v=\w+)?"', lambda m: f'href="css/
 html = html.replace('<script type="module" src="js/app.js"></script>', '<script type="module" src="js/app.js"></script>')
 html = re.sub(r'<script type="module" src="js/app\.js(\?v=\w+)?"></script>', block + f'\n<script type="module" src="js/app.js?v={v}"></script>', html)
 (root / 'index.html').write_text(html, encoding='utf-8')
-print('empreinte', v)
+# Service worker : tout le nécessaire pour fonctionner hors ligne (les gros fichiers de traits 2 et 3 se mettent en cache à la première utilisation)
+rel = lambda p: p.relative_to(root).as_posix()
+core = ['./', 'index.html', 'manifest.webmanifest', f'css/base.css?v={v}', f'css/themes.css?v={v}']
+core += [f'{rel(p)}?v={v}' for p in files]
+core += [f'{rel(p)}?v={v}' for p in DATA if p.name not in ('traits-2.json', 'traits-3.json')]
+core += [rel(p) for p in sorted((root / 'fonts').glob('*.woff2')) + sorted((root / 'icons').glob('*.png'))]
+sw = (root / 'tools' / 'sw.template.js').read_text(encoding='utf-8').replace('__V__', v).replace('__CORE__', json.dumps(core, indent=1))
+(root / 'sw.js').write_text(sw, encoding='utf-8')
+print('empreinte', v, '·', len(core), 'fichiers pour le hors ligne')
