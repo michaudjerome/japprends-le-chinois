@@ -1,16 +1,17 @@
 // Mode Jeu : quiz à 3 choix avec faux choix pièges. Séparé de la révision : ne touche pas au calendrier FSRS.
 import { allCards } from '../cards.js';
 import { loadDict, entriesOfLevel, toneHtml, strip } from '../dict.js';
-import { speak, voiceReady } from '../speech.js';
+import { speak, voiceReady, AUDIO_ENABLED } from '../speech.js';
 import { kvGet, kvSet } from '../db.js';
 import { topBar, icon, esc, celebrate } from '../ui.js';
 
-const TYPES = [
+const ALL_TYPES = [
   ['hz-fr', '字 → français', 'Que veut dire ce mot ?'],
   ['hz-py', '字 → pinyin', 'Comment se prononce ce mot ?'],
   ['fr-hz', 'français → 字', 'Quel caractère correspond ?'],
   ['au-hz', '🔊 → 字', 'Quel mot entendez-vous ?'],
 ];
+const TYPES = ALL_TYPES.filter(([k]) => AUDIO_ENABLED || k !== 'au-hz');
 const N = 10;
 const shuffle = (a) => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const bare = (py) => strip(py).replace(/[\s']/g, '');
@@ -44,6 +45,7 @@ function makeQuestion(item, pool, type) {
 export async function render(el) {
   const cards = await allCards();
   const st = { source: (await kvGet('quizSource')) || (cards.length >= 6 ? 'mine' : '1'), type: (await kvGet('quizType')) || 'hz-fr' };
+  if (!TYPES.some(([k]) => k === st.type)) st.type = 'hz-fr';
   const best = (await kvGet('quizBest')) || {};
   const hasVoice = !!(await voiceReady());
 
@@ -112,7 +114,7 @@ export async function render(el) {
       }
       el.querySelector('#after').innerHTML = `<div class="q-sol ${ok ? 'ok' : 'ko'}">
           <span class="zh">${esc(q.item.hanzi)}</span><span><span class="py">${toneHtml(q.item.pinyin)}</span><small>${esc(q.item.fr)}</small></span>
-          <button class="icon-btn" data-say aria-label="Écouter">${icon('sound')}</button></div>
+          ${AUDIO_ENABLED ? `<button class="icon-btn" data-say aria-label="Écouter">${icon('sound')}</button>` : ''}</div>
         <button class="btn" data-next>${g.k < qs.length - 1 ? 'Question suivante' : 'Voir le résultat'}</button>`;
       if (q.type !== 'au-hz' && ok) speak(q.item.hanzi);
     };

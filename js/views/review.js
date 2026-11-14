@@ -1,7 +1,7 @@
 // Mode Révision : carte → pinyin (et voix) → français, puis auto-évaluation FSRS
 import { allCards, decks } from '../cards.js';
 import { todayQueue, preview, grade, GRADES, Rating, isNew, reviewsToday } from '../srs.js';
-import { speak } from '../speech.js';
+import { speak, AUDIO_ENABLED } from '../speech.js';
 import { openStrokes } from '../sheet.js';
 import { settings } from '../settings.js';
 import { toneHtml } from '../dict.js';
@@ -55,7 +55,7 @@ export async function render(el, params) {
         ${st.stage < 2 ? `<span class="fc-hint">${st.stage === 0 ? 'Touchez pour voir le pinyin' : 'Touchez pour voir le français'}</span>` : ''}
       </button>
       ${st.stage >= 1 ? `<div class="fc-tools">
-        <button class="chip" data-say>${icon('sound')} Écouter</button>
+        ${AUDIO_ENABLED ? `<button class="chip" data-say>${icon('sound')} Écouter</button>` : ''}
         <button class="chip" data-strokes>${icon('brush')} Traits</button></div>` : ''}
       <div class="grades">${st.stage < 2 ? '' : libre
         ? `<button class="grade again" data-libre="0">À revoir</button><button class="grade good" data-libre="1">Je savais</button>`
