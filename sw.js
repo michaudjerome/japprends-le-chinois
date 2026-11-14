@@ -1,38 +1,40 @@
 // Service worker généré par tools/stamp.py : ne pas modifier à la main
-const V = '38abf0df';
+const V = 'a5a164cd';
 const CACHE = `jlc-${V}`;
 const CORE = [
  "./",
  "index.html",
  "manifest.webmanifest",
- "css/base.css?v=38abf0df",
- "css/themes.css?v=38abf0df",
- "js/app.js?v=38abf0df",
- "js/backup.js?v=38abf0df",
- "js/cards.js?v=38abf0df",
- "js/db.js?v=38abf0df",
- "js/dict.js?v=38abf0df",
- "js/settings.js?v=38abf0df",
- "js/sheet.js?v=38abf0df",
- "js/speech.js?v=38abf0df",
- "js/srs.js?v=38abf0df",
- "js/strokes.js?v=38abf0df",
- "js/ui.js?v=38abf0df",
- "js/version.js?v=38abf0df",
- "js/views/cards.js?v=38abf0df",
- "js/views/create.js?v=38abf0df",
- "js/views/discover.js?v=38abf0df",
- "js/views/home.js?v=38abf0df",
- "js/views/quiz.js?v=38abf0df",
- "js/views/review.js?v=38abf0df",
- "js/views/settings.js?v=38abf0df",
- "js/views/sources.js?v=38abf0df",
- "js/vendor/hanzi-writer.mjs?v=38abf0df",
- "js/vendor/ts-fsrs.mjs?v=38abf0df",
- "data/dict-fr.json?v=38abf0df",
- "data/packs.json?v=38abf0df",
- "data/traits-1.json?v=38abf0df",
- "data/traits-index.json?v=38abf0df",
+ "css/base.css?v=a5a164cd",
+ "css/themes.css?v=a5a164cd",
+ "js/app.js?v=a5a164cd",
+ "js/backup.js?v=a5a164cd",
+ "js/cards.js?v=a5a164cd",
+ "js/content.js?v=a5a164cd",
+ "js/db.js?v=a5a164cd",
+ "js/dict.js?v=a5a164cd",
+ "js/settings.js?v=a5a164cd",
+ "js/sheet.js?v=a5a164cd",
+ "js/speech.js?v=a5a164cd",
+ "js/srs.js?v=a5a164cd",
+ "js/strokes.js?v=a5a164cd",
+ "js/ui.js?v=a5a164cd",
+ "js/update.js?v=a5a164cd",
+ "js/version.js?v=a5a164cd",
+ "js/views/cards.js?v=a5a164cd",
+ "js/views/create.js?v=a5a164cd",
+ "js/views/discover.js?v=a5a164cd",
+ "js/views/home.js?v=a5a164cd",
+ "js/views/quiz.js?v=a5a164cd",
+ "js/views/review.js?v=a5a164cd",
+ "js/views/settings.js?v=a5a164cd",
+ "js/views/sources.js?v=a5a164cd",
+ "js/vendor/hanzi-writer.mjs?v=a5a164cd",
+ "js/vendor/ts-fsrs.mjs?v=a5a164cd",
+ "data/dict-fr.json?v=a5a164cd",
+ "data/packs.json?v=a5a164cd",
+ "data/traits-1.json?v=a5a164cd",
+ "data/traits-index.json?v=a5a164cd",
  "fonts/fraunces-500.woff2",
  "fonts/fraunces-700.woff2",
  "fonts/inter-400.woff2",
@@ -46,7 +48,8 @@ const CORE = [
 ];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)));
+  // Mise à jour automatique : dès que la nouvelle version est en cache, elle prend la main
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (e) => {
